@@ -1,6 +1,6 @@
 # video-fft
 
-[![PyPI version](https://img.shields.io/pypi/v/video_fft.svg)](https://pypi.org/project/video_fft)
+[![PyPI version](https://img.shields.io/pypi/v/video-fft.svg)](https://pypi.org/project/video-fft)
 
 Calculate the magnitude spectrum of a video sequence, via Fast Fourier Transform.
 
