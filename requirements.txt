@@ -1,0 +1,4 @@
+av>=8.0.3
+tqdm>=4.60.0
+numpy>=1.20.2
+matplotlib>=3.4.2
