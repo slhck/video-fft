@@ -32,7 +32,7 @@ Under macOS, it is recommended to install ffmpeg via [Homebrew](https://brew.sh)
 ## Installation
 
 ```
-pip3 install video_fft
+pip3 install video-fft
 ```
 
 ## Usage
