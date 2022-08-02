@@ -2,10 +2,14 @@
 from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter
 
 from .video_fft_calculator import VideoFftCalculator
+from . import __version__ as version
 
 
 def main():
-    parser = ArgumentParser(formatter_class=ArgumentDefaultsHelpFormatter)
+    parser = ArgumentParser(
+        formatter_class=ArgumentDefaultsHelpFormatter,
+        description=f"video-fft v{version}",
+    )
     parser.add_argument("input", help="Input video file")
     parser.add_argument(
         "-o",
