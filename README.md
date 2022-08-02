@@ -18,7 +18,7 @@ The package also outputs the azimuthally averaged 1D power spectrum, from which 
 
 ## Requirements
 
-- Python 3.6 or higher
+- Python 3.7 or higher
 - FFmpeg libraries (to run `pyav`)
 
 Under Ubuntu, to get ffmpeg libraries:
@@ -87,7 +87,7 @@ The concept is based on the following paper: Katsavounidis, Ioannis, Anne Aaron,
 
 The MIT License (MIT)
 
-Copyright (c) 2021 Werner Robitza
+Copyright (c) 2021-2022 Werner Robitza
 
 Permission is hereby granted, free of charge, to any person obtaining a
 copy of this software and associated documentation files (the
