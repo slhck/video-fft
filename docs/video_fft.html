@@ -76,7 +76,7 @@ video_fft    </h1>
 
                         <div class="pdoc-code codehilite"><pre><span></span><span id="L-1"><a href="#L-1"><span class="linenos">1</span></a><span class="kn">from</span> <span class="nn">.video_fft_calculator</span> <span class="kn">import</span> <span class="n">VideoFftCalculator</span><span class="p">,</span> <span class="n">VideoFftData</span>
 </span><span id="L-2"><a href="#L-2"><span class="linenos">2</span></a>
-</span><span id="L-3"><a href="#L-3"><span class="linenos">3</span></a><span class="n">__version__</span> <span class="o">=</span> <span class="s2">&quot;0.2.0&quot;</span>
+</span><span id="L-3"><a href="#L-3"><span class="linenos">3</span></a><span class="n">__version__</span> <span class="o">=</span> <span class="s2">&quot;0.3.0&quot;</span>
 </span><span id="L-4"><a href="#L-4"><span class="linenos">4</span></a>
 </span><span id="L-5"><a href="#L-5"><span class="linenos">5</span></a><span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;VideoFftCalculator&quot;</span><span class="p">,</span> <span class="s2">&quot;VideoFftData&quot;</span><span class="p">]</span>
 </span></pre></div>
@@ -122,7 +122,7 @@ video_fft    </h1>
 </span><span id="VideoFftCalculator-52"><a href="#VideoFftCalculator-52"><span class="linenos"> 52</span></a><span class="sd">            quiet (bool, optional): do not show progress bar</span>
 </span><span id="VideoFftCalculator-53"><a href="#VideoFftCalculator-53"><span class="linenos"> 53</span></a>
 </span><span id="VideoFftCalculator-54"><a href="#VideoFftCalculator-54"><span class="linenos"> 54</span></a><span class="sd">        Raises:</span>
-</span><span id="VideoFftCalculator-55"><a href="#VideoFftCalculator-55"><span class="linenos"> 55</span></a><span class="sd">            RuntimeError: _description_</span>
+</span><span id="VideoFftCalculator-55"><a href="#VideoFftCalculator-55"><span class="linenos"> 55</span></a><span class="sd">            RuntimeError: Wrong output format, must be &#39;json&#39; or &#39;csv&#39;</span>
 </span><span id="VideoFftCalculator-56"><a href="#VideoFftCalculator-56"><span class="linenos"> 56</span></a><span class="sd">        &quot;&quot;&quot;</span>
 </span><span id="VideoFftCalculator-57"><a href="#VideoFftCalculator-57"><span class="linenos"> 57</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">input_file</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">input_file</span><span class="p">)</span>
 </span><span id="VideoFftCalculator-58"><a href="#VideoFftCalculator-58"><span class="linenos"> 58</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">output</span> <span class="o">=</span> <span class="p">(</span>
@@ -383,7 +383,7 @@ video_fft    </h1>
 </span><span id="VideoFftCalculator.__init__-52"><a href="#VideoFftCalculator.__init__-52"><span class="linenos">52</span></a><span class="sd">            quiet (bool, optional): do not show progress bar</span>
 </span><span id="VideoFftCalculator.__init__-53"><a href="#VideoFftCalculator.__init__-53"><span class="linenos">53</span></a>
 </span><span id="VideoFftCalculator.__init__-54"><a href="#VideoFftCalculator.__init__-54"><span class="linenos">54</span></a><span class="sd">        Raises:</span>
-</span><span id="VideoFftCalculator.__init__-55"><a href="#VideoFftCalculator.__init__-55"><span class="linenos">55</span></a><span class="sd">            RuntimeError: _description_</span>
+</span><span id="VideoFftCalculator.__init__-55"><a href="#VideoFftCalculator.__init__-55"><span class="linenos">55</span></a><span class="sd">            RuntimeError: Wrong output format, must be &#39;json&#39; or &#39;csv&#39;</span>
 </span><span id="VideoFftCalculator.__init__-56"><a href="#VideoFftCalculator.__init__-56"><span class="linenos">56</span></a><span class="sd">        &quot;&quot;&quot;</span>
 </span><span id="VideoFftCalculator.__init__-57"><a href="#VideoFftCalculator.__init__-57"><span class="linenos">57</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">input_file</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">input_file</span><span class="p">)</span>
 </span><span id="VideoFftCalculator.__init__-58"><a href="#VideoFftCalculator.__init__-58"><span class="linenos">58</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">output</span> <span class="o">=</span> <span class="p">(</span>
@@ -430,7 +430,7 @@ video_fft    </h1>
 <h6 id="raises">Raises:</h6>
 
 <ul>
-<li><strong>RuntimeError:</strong>  _description_</li>
+<li><strong>RuntimeError:</strong>  Wrong output format, must be 'json' or 'csv'</li>
 </ul>
 </div>
 
