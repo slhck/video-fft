@@ -7,7 +7,7 @@ about: I ran across an error or bug in the program
 **:warning: Please read this carefully and edit the example responses! If you do not fill out this information, your bug report may be closed without comment.**
 
 **Checklist** (please tick all boxes)
-- [ ] I am using the latest version of `ffmpeg-bitrate-stats` (run `pip3 install --upgrade ffmpeg-bitrate-stats`)
+- [ ] I am using the latest version of `video-fft` (run `pip3 install --upgrade video-fft`)
 - [ ] I am using the latest stable version of `ffmpeg` or a recent build from Git master
 
 **Expected behavior**
