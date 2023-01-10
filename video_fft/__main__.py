@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter
+from argparse import ArgumentDefaultsHelpFormatter, ArgumentParser
 
-from .video_fft_calculator import VideoFftCalculator
 from . import __version__ as version
+from .video_fft_calculator import VideoFftCalculator
 
 
 def main():
@@ -50,7 +50,7 @@ def main():
         "--scale",
         help="Image scaling, adjust to increase/decrease rendered image size",
         default=1,
-        type=float
+        type=float,
     )
     parser.add_argument(
         "-q",
@@ -69,10 +69,10 @@ def main():
         mean=cli_args.mean,
         scale=cli_args.scale,
         output_format=cli_args.output_format,
-        quiet=cli_args.quiet
+        quiet=cli_args.quiet,
     )
     vid_fft.calc_fft()
-    vid_fft.print_stats()
+    print(vid_fft.get_formatted_stats())
 
 
 if __name__ == "__main__":

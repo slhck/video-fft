@@ -2,7 +2,20 @@
 
 [![PyPI version](https://img.shields.io/pypi/v/video-fft.svg)](https://pypi.org/project/video-fft)
 
-Calculate the magnitude spectrum of a video sequence, via Fast Fourier Transform.
+[![Python package](https://github.com/slhck/video-fft/actions/workflows/python-package.yml/badge.svg)](https://github.com/slhck/video-fft/actions/workflows/python-package.yml)
+
+Calculate the magnitude spectrum of a video sequence, via Fast Fourier Transform, to detect the actual resolution.
+
+**Contents:**
+
+- [What this does](#what-this-does)
+- [Requirements](#requirements)
+- [Installation](#installation)
+- [Usage](#usage)
+- [API](#api)
+- [Limitations](#limitations)
+- [Acknowledgements](#acknowledgements)
+- [License](#license)
 
 ## What this does
 
@@ -18,7 +31,7 @@ The package also outputs the azimuthally averaged 1D power spectrum, from which 
 
 ## Requirements
 
-- Python 3.7 or higher
+- Python 3.8 or higher
 - FFmpeg libraries (to run `pyav`)
 
 Under Ubuntu, to get ffmpeg libraries:
@@ -77,6 +90,27 @@ optional arguments:
   -q, --quiet           Do not show progress bar (default: False)
 ```
 
+## API
+
+The program exposes an API that you can use yourself:
+
+```python
+from video_fft import VideoFftCalculator
+
+vid_fft = VideoFftCalculator(
+    "input.mp4",
+    output="/path/to/output"
+)
+vid_fft.calc_fft()
+print(vid_fft.get_formatted_stats())
+```
+
+For more usage please read [the docs](https://htmlpreview.github.io/?https://github.com/slhck/video-fft/blob/master/docs/video_fft.html).
+
+## Limitations
+
+The absolute value of the FFT is not meaningful on its own and cannot be linked to the resolution of the input video. The plots also do not indicate any kind of resolution.
+
 ## Acknowledgements
 
 This tool is based on initial work from Julian Zebelein and Steve Göring (TU Ilmenau).
@@ -87,7 +121,7 @@ The concept is based on the following paper: Katsavounidis, Ioannis, Anne Aaron,
 
 The MIT License (MIT)
 
-Copyright (c) 2021-2022 Werner Robitza
+Copyright (c) 2021-2023 Werner Robitza
 
 Permission is hereby granted, free of charge, to any person obtaining a
 copy of this software and associated documentation files (the

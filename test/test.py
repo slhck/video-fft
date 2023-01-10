@@ -1,13 +1,11 @@
 #!/usr/bin/env python3
 
-import sys
 import os
-from video_fft.video_fft_calculator import VideoFftCalculator
-import pytest
+import sys
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
-import video_fft.__main__ as video_fft  # noqa E402
+from video_fft import VideoFftCalculator
 
 this_dir = os.path.abspath(os.path.dirname(__file__))
 input_file = os.path.join(this_dir, "test.mp4")
@@ -38,11 +36,12 @@ def test_images():
             print(e)
             pass
 
+
 def test_stats():
     fft = VideoFftCalculator(input_file)
     fft.calc_fft()
     ret = fft.get_stats()
 
-    del ret["input_file"]
+    del ret["input_file"]  # type: ignore
 
     assert ret == ground_truth

@@ -1,26 +1,58 @@
-import numpy as np
-from matplotlib import pyplot as plt
+from __future__ import annotations
+
+import csv
+import io
 import json
 import os
-from tqdm import tqdm
-from typing import Generator
-import av
 import sys
+from typing import Generator, Literal, TypedDict, cast
+
+import av
+import numpy as np
+from matplotlib import pyplot as plt
+from tqdm import tqdm
+
+
+class VideoFftData(TypedDict):
+    input_file: str
+    average_fft: int
+    max_fft: int
+    min_fft: int
+    median_fft: int
+    pct_05: int
+    pct_95: int
 
 
 class VideoFftCalculator:
     def __init__(
         self,
-        input_file,
-        num_frames=None,
-        output=None,
-        first_frame=False,
-        all_frames=False,
-        mean=False,
-        scale=1,
-        output_format="json",
-        quiet=False,
+        input_file: str,
+        num_frames: int | None = None,
+        output: str | None = None,
+        first_frame: bool = False,
+        all_frames: bool = False,
+        mean: bool = False,
+        scale: float = 1,
+        output_format: Literal["csv", "json"] = "json",
+        quiet: bool = False,
     ):
+        """
+
+
+        Args:
+            input_file (str): input video file
+            num_frames (int | None, optional): maximum number of frames to process
+            output (str | None, optional): output path for images
+            first_frame (bool, optional): render image for radial profile of the first frame
+            all_frames (bool, optional): render image for radial profile of all frames
+            mean (bool, optional): render image for mean/average radial profile of the entire sequence
+            scale (float, optional): image scaling, adjust to increase/decrease rendered image size
+            output_format (str, optional): select output format, must be 'json' or 'csv'
+            quiet (bool, optional): do not show progress bar
+
+        Raises:
+            RuntimeError: Wrong output format, must be 'json' or 'csv'
+        """
         self.input_file = str(input_file)
         self.output = (
             str(output) if output is not None else os.path.dirname(self.input_file)
@@ -30,25 +62,35 @@ class VideoFftCalculator:
         self.all_frames = bool(all_frames)
         self.mean = bool(mean)
         self.scale = float(scale)
+
         self.output_format = str(output_format)
-        self.quiet = bool(quiet)
-
-        self.frame_height = None
-        self.frame_width = None
-        self.fig_prefix = os.path.join(
-            self.output, os.path.splitext(os.path.basename(self.input_file))[0]
-        )
-
-        self.data = {}
-        self.last_magnitude_spectrum = None  # for later
-        self.avg_magnitude_spectrum = None  # for later
-
         if self.output_format not in ["json", "csv"]:
             raise RuntimeError("Wrong output format, must be 'json' or 'csv'")
 
+        self.quiet = bool(quiet)
+
+        self.frame_height: int | None = None
+        self.frame_width: int | None = None
+        self.fig_prefix: str = os.path.join(
+            self.output, os.path.splitext(os.path.basename(self.input_file))[0]
+        )
+
+        self.data: VideoFftData | None = None
+        self.last_magnitude_spectrum: np.ndarray | None = None  # for later
+        self.avg_magnitude_spectrum = None  # for later
+
     @staticmethod
-    def radial_profile(data, center):
+    def radial_profile(data: np.ndarray, center: tuple[int, int]) -> np.ndarray:
         """
+        Calculate the radial profile of a 2D array.
+
+        Args:
+            data (np.ndarray): 2D array
+            center (tuple[int, int]): center of the radial profile
+
+        Returns:
+            np.ndarray: radial profile
+
         Source: https://stackoverflow.com/a/21242776/435093
         """
         y, x = np.indices((data.shape))
@@ -60,7 +102,16 @@ class VideoFftCalculator:
         radialprofile = tbin / nr
         return radialprofile
 
-    def get_stats(self):
+    def get_stats(self) -> VideoFftData:
+        """
+        Return the calculated statistics.
+
+        Raises:
+            RuntimeError: when the data hasn't been generated yet
+
+        Returns:
+            VideoFftData: calculated statistics
+        """
         if not self.data:
             raise RuntimeError(
                 "Data has not been generated yet, call calc_fft() first!"
@@ -68,30 +119,41 @@ class VideoFftCalculator:
 
         return self.data
 
-    def print_stats(self) -> None:
+    def get_formatted_stats(self) -> str:
+        """
+        Return the stats in the chosen output format.
+
+        Returns:
+            str: stats in the chosen output format
+        """
         if not self.data:
             raise RuntimeError(
                 "Data has not been generated yet, call calc_fft() first!"
             )
 
         if self.output_format == "json":
-            print(json.dumps(self.data, indent=4))
+            return json.dumps(self.data, indent=4)
         elif self.output_format == "csv":
-            import csv
-
-            writer = csv.writer(sys.stdout)
+            output = io.StringIO()
+            writer = csv.writer(output)
             writer.writerow(self.data.keys())
             writer.writerow(self.data.values())
+            return output.getvalue()
         else:
-            # shouldn't happen
-            pass
+            raise RuntimeError("Wrong output format, must be 'json' or 'csv'")
 
     def get_num_frames(self) -> int:
         container = av.open(self.input_file)
         num_frames = container.streams.video[0].frames
         return num_frames
 
-    def read_input_file(self) -> Generator[np.ndarray, None, None]:
+    def _read_input_file(self) -> Generator[np.ndarray, None, None]:
+        """
+        Read the input and yield the individual frames
+
+        Returns:
+            Generator[np.ndarray, None, None]: generator of frames
+        """
         container = av.open(self.input_file)
 
         if not len(container.streams.video):
@@ -105,7 +167,7 @@ class VideoFftCalculator:
             )
             yield frame_data
 
-    def plot_magnitude_spectrum(self, what: str, frame_index=None):
+    def _plot_magnitude_spectrum(self, what: str, frame_index=None):
         if what not in ["last", "mean"]:
             raise RuntimeError("'what' must be 'last' or 'mean'")
 
@@ -117,6 +179,9 @@ class VideoFftCalculator:
 
         if data is None:
             raise RuntimeError("No data to plot!")
+
+        if self.frame_width is None or self.frame_height is None:
+            raise RuntimeError("No frame width/height calculated")
 
         plt.figure(
             figsize=(
@@ -138,9 +203,9 @@ class VideoFftCalculator:
 
         print(f"File written to {file_path}", file=sys.stderr)
 
-    def calc_fft(self):
+    def calc_fft(self) -> None:
         # Generate empty list fft sum values
-        fft_values = []
+        fft_values: list[int] = []
 
         if self.num_frames is not None:
             num_frames = min(self.get_num_frames(), self.num_frames)
@@ -150,12 +215,12 @@ class VideoFftCalculator:
         t = tqdm(total=num_frames, disable=self.quiet, file=sys.stderr)
 
         current_frame = 0
-        for frame_data in self.read_input_file():
+        for frame_data in self._read_input_file():
             fshift = np.fft.fftshift(np.fft.fft2(frame_data))
             self.last_magnitude_spectrum = 20 * np.log(np.abs(fshift))
 
             if self.avg_magnitude_spectrum is None:
-                self.avg_magnitude_spectrum = self.last_magnitude_spectrum
+                self.avg_magnitude_spectrum = self.last_magnitude_spectrum  # type: ignore
             else:
                 self.avg_magnitude_spectrum = np.mean(
                     np.array(
@@ -165,16 +230,19 @@ class VideoFftCalculator:
                 )
 
             if not (self.frame_height or self.frame_width):
-                self.frame_height, self.frame_width = self.last_magnitude_spectrum.shape
+                self.frame_height, self.frame_width = self.last_magnitude_spectrum.shape  # type: ignore
+
+            if self.frame_height is None or self.frame_width is None:
+                raise RuntimeError("Could not determine frame width/height")
 
             if (self.first_frame and current_frame == 0) or self.all_frames:
-                self.plot_magnitude_spectrum("last", current_frame)
+                self._plot_magnitude_spectrum("last", current_frame)
 
-            center = (self.frame_width / 2, self.frame_height / 2)
+            center = (int(self.frame_width / 2), int(self.frame_height / 2))
 
             # Calculate the azimuthally averaged 1D power spectrum
             psf_1d = VideoFftCalculator.radial_profile(
-                self.last_magnitude_spectrum, center
+                cast(np.ndarray, self.last_magnitude_spectrum), center
             )
             # Get the sum of the high frequencies
             low_freq_ind = int((len(psf_1d) / 2))
@@ -188,7 +256,7 @@ class VideoFftCalculator:
         t.close()
 
         if self.mean:
-            self.plot_magnitude_spectrum("mean")
+            self._plot_magnitude_spectrum("mean")
 
         if not fft_values:
             raise RuntimeError("No FFT values were calculated!")
@@ -199,6 +267,6 @@ class VideoFftCalculator:
             "max_fft": int(max(fft_values)),
             "min_fft": int(min(fft_values)),
             "median_fft": int(np.median(fft_values)),
-            "pct_05": int(np.percentile(fft_values, 5, interpolation="midpoint")),
-            "pct_95": int(np.percentile(fft_values, 95, interpolation="midpoint")),
+            "pct_05": int(np.percentile(fft_values, 5, method="midpoint")),
+            "pct_95": int(np.percentile(fft_values, 95, method="midpoint")),
         }
