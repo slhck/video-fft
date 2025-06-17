@@ -31,7 +31,7 @@ The package also outputs the azimuthally averaged 1D power spectrum, from which 
 
 ## Requirements
 
-- Python 3.8 or higher
+- Python 3.9 or higher
 - FFmpeg libraries (to run `pyav`)
 
 Under Ubuntu, to get ffmpeg libraries:
