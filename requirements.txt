@@ -1,4 +1,0 @@
-av
-tqdm
-numpy
-matplotlib

@@ -1,0 +1,55 @@
+[build-system]
+requires = ["uv_build>=0.8.14,<0.9.0"]
+build-backend = "uv_build"
+
+[project]
+name = "video_fft"
+version = "0.3.0"
+description = "Calculate the magnitude spectrum of a video sequence, via Fast Fourier Transform"
+readme = "README.md"
+authors = [
+    { name = "Werner Robitza", email = "werner.robitza@gmail.com" }
+]
+license = "MIT"
+license-files = ["LICENSE.md"]
+requires-python = ">=3.9"
+keywords = ["ffmpeg", "video"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Topic :: Multimedia :: Video",
+    "License :: OSI Approved :: MIT License",
+    "Natural Language :: English",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+]
+dependencies = [
+    "av",
+    "tqdm",
+    "numpy",
+    "matplotlib",
+]
+
+[project.urls]
+Homepage = "https://github.com/slhck/video-fft"
+Repository = "https://github.com/slhck/video-fft"
+
+[project.scripts]
+video-fft = "video_fft.__main__:main"
+
+[dependency-groups]
+dev = [
+    "pytest >=8.1.1,<9",
+    "ruff>=0.12.11",
+    "mypy",
+    "pdoc>=15.0.4",
+]
+
+[tool.mypy]
+python_version = "3.13"
+ignore_missing_imports = true
+exclude = ["build"]

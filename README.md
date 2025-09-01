@@ -36,16 +36,34 @@ The package also outputs the azimuthally averaged 1D power spectrum, from which 
 
 Under Ubuntu, to get ffmpeg libraries:
 
-    sudo apt install libavformat-dev libavcodec-dev libavdevice-dev libavutil-dev libavfilter-dev libswscale-dev libavresample-dev
+```bash
+sudo apt install libavformat-dev libavcodec-dev libavdevice-dev libavutil-dev libavfilter-dev libswscale-dev libavresample-dev
+```
 
 Under macOS, it is recommended to install ffmpeg via [Homebrew](https://brew.sh):
 
-    brew install ffmpeg
+```bash
+brew install ffmpeg
+```
 
 ## Installation
 
+Install with [`uv`](https://docs.astral.sh/uv/getting-started/installation/):
+
+```bash
+uvx video-fft
 ```
-pip3 install video-fft
+
+Or install with `pipx`:
+
+```bash
+pipx install video-fft
+```
+
+Or, with pip:
+
+```bash
+pip3 install --user video-fft
 ```
 
 ## Usage
