@@ -1,3 +1,13 @@
+"""
+FFT-based video analysis to detect actual video resolution.
+
+This module provides tools for analyzing video content using Fast Fourier Transform
+(FFT) to identify upscaled content by examining high-frequency components. Upscaled
+videos typically show reduced high-frequency energy compared to native resolution
+content, which can be detected through radial profile analysis of the FFT magnitude
+spectrum.
+"""
+
 from __future__ import annotations
 
 import csv
@@ -71,6 +81,11 @@ class VideoFftCalculator:
 
         self.frame_height: int | None = None
         self.frame_width: int | None = None
+
+        # Create output directory if it doesn't exist
+        if self.output:
+            os.makedirs(self.output, exist_ok=True)
+
         self.fig_prefix: str = os.path.join(
             self.output, os.path.splitext(os.path.basename(self.input_file))[0]
         )
@@ -204,6 +219,26 @@ class VideoFftCalculator:
         print(f"File written to {file_path}", file=sys.stderr)
 
     def calc_fft(self) -> None:
+        """
+        Calculate FFT-based metrics for the input video.
+
+        Processes each frame by computing its 2D FFT, then extracts the azimuthally
+        averaged 1D power spectrum (radial profile) from the magnitude spectrum.
+        The sum of high-frequency components is used as a metric to detect upscaled
+        content - native resolution videos have higher values than upscaled ones.
+
+        Results are stored in self.data as a VideoFftData dict containing:
+        - input_file: absolute path to input
+        - average_fft: mean of high-frequency sums across all frames
+        - max_fft, min_fft, median_fft: distribution statistics
+        - pct_05, pct_95: 5th and 95th percentile values
+
+        If first_frame, all_frames, or mean options are set, corresponding
+        magnitude spectrum images are saved to the output directory.
+
+        Raises:
+            RuntimeError: If no video streams found or no FFT values calculated.
+        """
         # Generate empty list fft sum values
         fft_values: list[int] = []
 

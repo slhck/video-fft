@@ -1,11 +1,13 @@
 #!/usr/bin/env python3
+import os
+import sys
 from argparse import ArgumentDefaultsHelpFormatter, ArgumentParser
 
 from . import __version__ as version
 from .video_fft_calculator import VideoFftCalculator
 
 
-def main():
+def main() -> int:
     parser = ArgumentParser(
         formatter_class=ArgumentDefaultsHelpFormatter,
         description=f"video-fft v{version}",
@@ -60,20 +62,34 @@ def main():
     )
     cli_args = parser.parse_args()
 
-    vid_fft = VideoFftCalculator(
-        cli_args.input,
-        num_frames=cli_args.num_frames,
-        output=cli_args.output,
-        first_frame=cli_args.first_frame,
-        all_frames=cli_args.all_frames,
-        mean=cli_args.mean,
-        scale=cli_args.scale,
-        output_format=cli_args.output_format,
-        quiet=cli_args.quiet,
-    )
-    vid_fft.calc_fft()
-    print(vid_fft.get_formatted_stats())
+    # Validate input file exists
+    if not os.path.isfile(cli_args.input):
+        print(f"Error: Input file not found: {cli_args.input}", file=sys.stderr)
+        return 1
+
+    try:
+        vid_fft = VideoFftCalculator(
+            cli_args.input,
+            num_frames=cli_args.num_frames,
+            output=cli_args.output,
+            first_frame=cli_args.first_frame,
+            all_frames=cli_args.all_frames,
+            mean=cli_args.mean,
+            scale=cli_args.scale,
+            output_format=cli_args.output_format,
+            quiet=cli_args.quiet,
+        )
+        vid_fft.calc_fft()
+        print(vid_fft.get_formatted_stats())
+    except RuntimeError as e:
+        print(f"Error: {e}", file=sys.stderr)
+        return 1
+    except Exception as e:
+        print(f"Unexpected error: {e}", file=sys.stderr)
+        return 1
+
+    return 0
 
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main())
