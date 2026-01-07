@@ -1,3 +1,19 @@
+## [0.4.0] - 2026-01-07
+
+### 🚀 Features
+
+- Improve CLI error handling and add documentation
+
+### ⚙️ Miscellaneous Tasks
+
+- Remove gitchangelog templates
+- Update support to python 3.15
+- Test only Python 3.9 and 3.15
+- Bump version to 0.4.0
+
+### ◀️ Revert
+
+- Use Python 3.14 instead of 3.15
 ## [0.3.2] - 2025-10-17
 
 ### ⚙️ Miscellaneous Tasks
