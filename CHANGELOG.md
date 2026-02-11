@@ -1,3 +1,9 @@
+## [0.4.1] - 2026-02-11
+
+### ⚙️ Miscellaneous Tasks
+
+- Drop Python 3.9 support, require >= 3.10
+- Bump version to 0.4.1
 ## [0.4.0] - 2026-01-07
 
 ### 🚀 Features
