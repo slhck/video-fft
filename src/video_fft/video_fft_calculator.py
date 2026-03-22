@@ -255,7 +255,7 @@ class VideoFftCalculator:
             self.last_magnitude_spectrum = 20 * np.log(np.abs(fshift))
 
             if self.avg_magnitude_spectrum is None:
-                self.avg_magnitude_spectrum = self.last_magnitude_spectrum  # type: ignore
+                self.avg_magnitude_spectrum = self.last_magnitude_spectrum
             else:
                 self.avg_magnitude_spectrum = np.mean(
                     np.array(
@@ -265,7 +265,7 @@ class VideoFftCalculator:
                 )
 
             if not (self.frame_height or self.frame_width):
-                self.frame_height, self.frame_width = self.last_magnitude_spectrum.shape  # type: ignore
+                self.frame_height, self.frame_width = self.last_magnitude_spectrum.shape
 
             if self.frame_height is None or self.frame_width is None:
                 raise RuntimeError("Could not determine frame width/height")
