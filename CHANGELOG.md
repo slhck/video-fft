@@ -1,3 +1,8 @@
+## [0.4.3] - 2026-03-30
+
+### ⚙️ Miscellaneous Tasks
+
+- Bump version to 0.4.3
 ## [0.4.2] - 2026-03-30
 
 ### 🐛 Bug Fixes
