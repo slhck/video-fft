@@ -1,3 +1,14 @@
+## [0.4.2] - 2026-03-30
+
+### 🐛 Bug Fixes
+
+- *(build)* Rename LICENSE to LICENSE.md
+
+### ⚙️ Miscellaneous Tasks
+
+- Replace mypy with ty for type checking
+- *(build)* Relax uv_build upper bound to <1.0.0
+- Bump version to 0.4.2
 ## [0.4.1] - 2026-02-11
 
 ### ⚙️ Miscellaneous Tasks
