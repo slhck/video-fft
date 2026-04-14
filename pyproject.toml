@@ -42,7 +42,7 @@ video-fft = "video_fft.__main__:main"
 
 [dependency-groups]
 dev = [
-    "pytest >=8.1.1,<9",
+    "pytest>=8.1.1,<10",
     "ruff>=0.12.11",
     "pdoc>=15.0.4",
     "ty>=0.0.24",
