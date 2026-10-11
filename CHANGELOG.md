@@ -1,3 +1,13 @@
+## [0.4.4] - 2026-10-11
+
+### 🐛 Bug Fixes
+
+- *(deps)* Update dependencies with known vulnerabilities
+
+### ⚙️ Miscellaneous Tasks
+
+- Support Python 3.15
+- Bump version to 0.4.4
 ## [0.4.3] - 2026-03-30
 
 ### ⚙️ Miscellaneous Tasks
